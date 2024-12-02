@@ -43,14 +43,30 @@ class Game:
         castle = Room("Castle", "dans un énorme château fort avec des douves et un pont levis. Sur les tours, des flèches en or massif.")
         self.rooms.append(castle)
 
-        # Create exits for rooms
+        #ajouter des lieux 
+        grenier = Room("Grenier", "dans un grenier poussiéreux avec de vieilles malles et des toiles d'araignée partout.") 
+        self.rooms.append(grenier) 
+        sous_sol = Room("Sous-sol", "dans un sous-sol sombre et humide où des bruits étranges se font entendre.") 
+        self.rooms.append(sous_sol) 
+        jardin = Room("Jardin", "dans un joli jardin plein de fleurs colorées et d'arbres fruitiers.") 
+        self.rooms.append(jardin)
+        cuisine = Room("Cuisine", "dans une petite cuisine où il y a des plats qui mijotent et des odeurs délicieuses.")
+        self.rooms.append(cuisine)
 
-        forest.exits = {"N" : cave, "E" : tower, "S" : castle, "O" : None}
-        tower.exits = {"N" : cottage, "E" : None, "S" : swamp, "O" : forest}
-        cave.exits = {"N" : None, "E" : cottage, "S" : forest, "O" : None}
-        cottage.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave}
-        swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle}
-        castle.exits = {"N" : forest, "E" : swamp, "S" : None, "O" : None}
+        # Create exits for rooms
+        #ajout des commande up et down pour integrer les nouv lieu en faisant le lien avec les autres lieu qui etaient deja exista
+
+        forest.exits = {"N": cave, "E": jardin, "S": castle, "O": None, "U": grenier, "D": None}
+        tower.exits = {"N": cottage, "E": None, "S": None, "O": cuisine, "U": None, "D": sous_sol} 
+        cave.exits = {"N": None, "E": cottage, "S": forest, "O": volcan, "U": None, "D": None} 
+        cottage.exits = {"N": None, "E": None, "S": tower, "O": cave, "U": None, "D": None} 
+        swamp.exits = {"N": tower, "E": None, "S": volcan, "O": castle, "U": None, "D": None}
+        castle.exits = {"N": forest, "E": swamp, "S": jardin, "O": None, "U": None, "D": None} 
+        jardin.exits = {"N": castle, "E": None, "S": cuisine, "O": forest, "U": None, "D": None} 
+        cuisine.exits = {"N": jardin, "E": tower, "S": None, "O": None, "U": None, "D": None}  
+        grenier.exits = {"N": None, "E": None, "S": None, "O": None, "U": None, "D": forest} 
+        sous_sol.exits = {"N": None, "E": None, "S": None, "O": None, "U": tower, "D": None}
+   
 
         # Setup player and starting room
 
