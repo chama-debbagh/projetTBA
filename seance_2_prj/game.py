@@ -58,9 +58,9 @@ class Game:
 
         forest.exits = {"N": cave, "E": jardin, "S": castle, "O": None, "U": grenier, "D": None}
         tower.exits = {"N": cottage, "E": None, "S": None, "O": cuisine, "U": None, "D": sous_sol} 
-        cave.exits = {"N": None, "E": cottage, "S": forest, "O": volcan, "U": None, "D": None} 
+        cave.exits = {"N": None, "E": cottage, "S": forest, "O": None , "U": None, "D": None} 
         cottage.exits = {"N": None, "E": None, "S": tower, "O": cave, "U": None, "D": None} 
-        swamp.exits = {"N": tower, "E": None, "S": volcan, "O": castle, "U": None, "D": None}
+        swamp.exits = {"N": tower, "E": None, "S": None , "O": castle, "U": None, "D": None}
         castle.exits = {"N": forest, "E": swamp, "S": jardin, "O": None, "U": None, "D": None} 
         jardin.exits = {"N": castle, "E": None, "S": cuisine, "O": forest, "U": None, "D": None} 
         cuisine.exits = {"N": jardin, "E": tower, "S": None, "O": None, "U": None, "D": None}  
