@@ -55,6 +55,10 @@ class Actions:
 
         # Get the direction from the list of words.
         direction = list_of_words[1]
+        #check si la direction est valid
+        if direction not in player .current_room.exits:
+            print(f"\nLa direction '{direction}' n'est pas valide. essayer une autre direction .\n")
+            return False
         # Move the player in the direction specified by the parameter.
         player.move(direction)
         return True
