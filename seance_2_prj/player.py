@@ -5,7 +5,7 @@ class Player():
     def __init__(self, name):
         self.name = name
         self.current_room = None
-        self.history=[] #initialisation de l historique avec une liste videee
+        history=[] #initialisation de l historique avec une liste videee
     
     
     # Define the move method.
@@ -17,7 +17,7 @@ class Player():
         if next_room is None:
             print("\nAucune porte dans cette direction !\n")
             return False
-        self.history.append(self.current_room) #ajout de la position precedente du joueur a l historique
+        history.append(self.current_room) #ajout de la position precedente du joueur a l historique
         
         # Set the current room to the next room.
         self.current_room = next_room
