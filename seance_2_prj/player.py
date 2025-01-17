@@ -11,6 +11,11 @@ class Player:
         if self.current_room:
             self.history.append(self.current_room.name)
 
+        if not self.current_room:  # Vérifie si le joueur n'est pas dans une pièce
+            print("Erreur : Vous n'êtes dans aucune pièce. Déplacez-vous pour commencer.")
+            return False
+
+
         next_room = self.current_room.get_exit(direction)
 
         if next_room is None:

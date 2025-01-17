@@ -1,6 +1,7 @@
 from item import Item
 # Description: The actions module.
 
+
 # The actions module contains the functions that are called when a command is executed.
 # Each function takes 3 parameters:
 # - game: the game object
@@ -16,7 +17,6 @@ from item import Item
 MSG0 = "\nLa commande '{command_word}' ne prend pas de paramètre.\n"
 # The MSG1 variable is used when the command takes 1 parameter.
 MSG1 = "\nLa commande '{command_word}' prend 1 seul paramètre.\n"
-from item import Item
 
 class Actions:
 
@@ -34,10 +34,21 @@ class Actions:
             return False
         
         current_room = player.current_room
-        if direction in current_room.exit_puzzles:
+        if current_room.exit_puzzles and direction in current_room.exit_puzzles :
             if not current_room.exit_puzzles_solved[direction]:
                 print(f"\nÉnigme pour aller vers {direction} : {current_room.exit_puzzles[direction]}")
-                attempt = input("Votre réponse : ")
+                #attempt = input("Votre réponse : ")
+                attempts = 3
+                while attempts > 0:
+                    attempt = input("Votre réponse : ")
+                    if current_room.solve_exit_puzzle(direction, attempt):
+                        break
+                    attempts -= 1
+                    print(f"Tentatives restantes : {attempts}")
+                if attempts == 0:
+                    print("Vous avez échoué. Fin du jeu.")
+                    return False
+
                 if not current_room.solve_exit_puzzle(direction, attempt):
                     return False
 

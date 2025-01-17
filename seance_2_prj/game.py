@@ -102,6 +102,14 @@ class Game:
         hall.add_exit_puzzle("O", "Je monte et je descends, mais je ne bouge jamais. Qui suis-je ?", "escaliers")
         salon.add_exit_puzzle("S", "Quel est le résultat de 10 - 4 ?", "6")
 
+
+        # Vérifie que toutes les sorties ont une énigme associée
+        for direction in hall.exits.keys():
+            if direction not in hall.exit_puzzles:
+                print(f"Attention : aucune énigme n'est associée à la sortie {direction} du Hall.")
+
+
+
         self.rooms = [hall, salon, cuisine, grenier]
         self.player.current_room = hall
 
@@ -122,6 +130,11 @@ class Game:
             self.process_command(command)
 
     def process_command(self, command_string):
+        command_string = command_string.strip()  # Supprime les espaces inutiles en début et fin
+        if not command_string:  # Vérifie si la commande est vide après le nettoyage
+            print("Commande vide. Veuillez entrer une commande valide.")
+            return
+
         words = command_string.split(" ") #supprime les espaces en trop
         command_word = words[0].lower() # Convertit en minuscules pour comparaison
 
