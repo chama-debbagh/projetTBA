@@ -14,8 +14,6 @@ class Game:
         self.commands = {}
         self.player = None
         self.health = 100  # Ajout d'un système de santé
-
-    e, grenier]
         self.player.current_room = hall
 
 
