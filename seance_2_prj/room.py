@@ -3,9 +3,13 @@ from item import Item
 class Room:
 
     def __init__(self, name, description, puzzle=None, solution=None, danger_level=0):
+        """
+        Initialise une pièce avec un nom, une description, une énigme (optionnelle),
+        une solution, et un niveau de danger.
+        """
         self.name = name
         self.description = description
-        self.exits = {}
+        self.exits = {}  # Dictionnaire des sorties possibles
         self.items = set()
         self.puzzle = puzzle
         self.solution = solution
@@ -13,31 +17,50 @@ class Room:
         self.danger_level = danger_level  # Ajout d'un niveau de danger
 
     def get_exit(self, direction):
+        """
+        Retourne la pièce associée à une direction donnée.
+        """
         return self.exits.get(direction)
 
     def get_exit_string(self):
-        exit_string = "Sorties : "
-        for exit in self.exits.keys():
-            exit_string += exit + ", "
-        return exit_string.strip(", ")
+        """
+        Retourne une chaîne de caractères listant toutes les sorties possibles.
+        """
+        exit_string = "Sorties disponibles :\n"
+        for exit, room in self.exits.items():
+            exit_string += f"  - {exit} : {room.name}\n"
+        return exit_string.strip()
 
     def get_long_description(self):
-        description = f"\nVous êtes {self.description}\n\n{self.get_exit_string()}\n"
+        """
+        Retourne une description complète de la pièce, incluant les sorties et les objets.
+        """
+        description = f"\nVous êtes {self.description}\n"
+        if not self.puzzle_solved and self.puzzle:
+            description += f"Énigme : {self.puzzle}\n"
+        description += self.get_exit_string()
         if self.items:
-            description += f"\nObjets dans la pièce :\n    - {', '.join(str(item) for item in self.items)}\n"
-        if self.puzzle and not self.puzzle_solved:
-            description += f"\nÉnigme : {self.puzzle}\n"
+            description += f"\nObjets dans la pièce :\n  - {', '.join(str(item) for item in self.items)}"
         return description
 
     def add_item(self, item):
+        """
+        Ajoute un objet à la pièce.
+        """
         self.items.add(item)
 
     def remove_item(self, item):
+        """
+        Retire un objet de la pièce.
+        """
         self.items.discard(item)
 
     def solve_puzzle(self, attempt):
+        """
+        Vérifie si la tentative de réponse correspond à la solution de l'énigme.
+        """
         if self.solution and attempt.lower() == self.solution.lower():
             self.puzzle_solved = True
-            print("Vous avez résolu l'énigme !")
+            print("Bravo ! Vous avez résolu l'énigme.")
         else:
             print("Ce n'est pas la bonne réponse. Essayez encore.")

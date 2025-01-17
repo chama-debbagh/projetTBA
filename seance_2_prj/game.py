@@ -26,45 +26,46 @@ class Game:
         self.commands["solve"] = solve_cmd
         inspect_cmd = Command("inspect", " : Inspecter la pièce pour des indices", Actions.inspect, 0)
         self.commands["inspect"] = inspect_cmd
-
+        
+        
         hall = Room(
-            "Hall",
-            "Vous êtes dans le hall d'entrée de la maison hantée, avec des chandeliers vacillants.",
-            "Quel est le mot de passe de l'entrée ?",
-            "sésame"
+        "Hall",
+        "dans le hall d'entrée de la maison hantée, des chandeliers vacillants.",
+        "Je te suis partout. Je disparais chaque fois que la lumière arrive. Qui suis-je ?",
+        "ombre"
         )
-
+        
+        
         salon = Room(
-            "Salon",
-            "Un vieux salon avec des portraits effrayants. Le feu de la cheminée est éteint.",
-            "Comment rallumer le feu ?",
-            "allumette"
+        "Salon",
+        "dans un vieux salon rempli de meubles couverts de poussière.",
+        "Je monte et je descends, mais je ne bouge jamais. Qui suis-je ?",
+        "escaliers"
         )
-
+        
+        
         cuisine = Room(
-            "Cuisine",
-            "Une cuisine poussiéreuse avec des couteaux rouillés sur la table.",
-            "Quel ingrédient manque pour finir le plat ?",
-            "sel"
+        "Cuisine",
+        "dans une cuisine où les casseroles pendent des murs.",
+        "Combien font 12 divisé par 3, multiplié par 2 ?",
+        "8"
         )
-
+        
+        
         grenier = Room(
-            "Grenier",
-            "Un grenier obscur rempli de toiles d'araignée et de vieilles boîtes.",
-            "Combien de boîtes y a-t-il ?",
-            "7"
+        "Grenier",
+        "dans un grenier obscur rempli de toiles d'araignée.",
+        "Je commence la nuit et je finis le matin. Qui suis-je ?",
+        "nuit"
         )
 
-        hall.exits = {"N": salon}
+        hall.exits = {"N": salon, "E": cuisine, "O": grenier}
         salon.exits = {"S": hall, "E": cuisine}
-        cuisine.exits = {"W": salon, "U": grenier}
-        grenier.exits = {"D": cuisine}
+        cuisine.exits = {"W": salon, "N": grenier}
+        grenier.exits = {"S": salon, "E": hall}
 
         self.rooms = [hall, salon, cuisine, grenier]
-
-        self.player = Player(input("Entrez votre nom : "))
         self.player.current_room = hall
-
     def reduce_health(self, amount):
         self.health -= amount
         if self.health <= 0:
