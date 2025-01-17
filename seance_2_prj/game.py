@@ -29,34 +29,34 @@ class Game:
         
         
         hall = Room(
-        "Hall",
-        "dans le hall d'entrée de la maison hantée, des chandeliers vacillants.",
-        "Je te suis partout. Je disparais chaque fois que la lumière arrive. Qui suis-je ?",
-        "ombre"
+            "Hall",
+            "dans le hall d'entrée de la maison hantée, des chandeliers vacillants.",
+            "Je te suis partout. Je disparais chaque fois que la lumière arrive. Qui suis-je ?",
+            "ombre"
         )
         
         
         salon = Room(
-        "Salon",
-        "dans un vieux salon rempli de meubles couverts de poussière.",
-        "Je monte et je descends, mais je ne bouge jamais. Qui suis-je ?",
-        "escaliers"
+            "Salon",
+            "dans un vieux salon rempli de meubles couverts de poussière.",
+            "Je monte et je descends, mais je ne bouge jamais. Qui suis-je ?",
+            "escaliers"
         )
         
         
         cuisine = Room(
-        "Cuisine",
-        "dans une cuisine où les casseroles pendent des murs.",
-        "Combien font 12 divisé par 3, multiplié par 2 ?",
-        "8"
+            "Cuisine",
+            "dans une cuisine où les casseroles pendent des murs.",
+            "Combien font 12 divisé par 3, multiplié par 2 ?",
+            "8"
         )
         
         
         grenier = Room(
-        "Grenier",
-        "dans un grenier obscur rempli de toiles d'araignée.",
-        "Je commence la nuit et je finis le matin. Qui suis-je ?",
-        "nuit"
+            "Grenier",
+            "dans un grenier obscur rempli de toiles d'araignée.",
+            "Je commence la nuit et je finis le matin. Qui suis-je ?",
+            "nuit"
         )
 
         hall.exits = {"N": salon, "E": cuisine, "O": grenier}
@@ -66,6 +66,8 @@ class Game:
 
         self.rooms = [hall, salon, cuisine, grenier]
         self.player.current_room = hall
+
+
     def reduce_health(self, amount):
         self.health -= amount
         if self.health <= 0:
