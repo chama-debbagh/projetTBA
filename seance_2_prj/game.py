@@ -1,18 +1,22 @@
-from room import Room
 from player import Player
+from room import Room
+from riddle import Riddle
 from command import Command
-from actions import Actions
-from item import Item
 
-   # directions = set(["N", "E", "S", "O", "U", "D"])
 class Game:
+    """
+    Classe principale du jeu.
+    """
     def __init__(self):
         self.finished = False
         self.rooms = []
         self.player = None
-        self.game_state = "playing"  # Can be "playing", "won", or "lost"
+        self.game_state = "playing"
+        self.commands = {}
+        self.directions = set(["N", "E", "S", "O"])
 
     def setup(self):
+        """Configure le jeu avec les pièces et les énigmes."""
         # Création des énigmes
         riddles = [
             Riddle("Je te suis partout. Je disparais chaque fois que la lumière arrive. Qui suis-je ?", "ombre"),
@@ -34,16 +38,49 @@ class Game:
         bibliotheque.exits = {"S": cuisine, "E": salon}
 
         self.rooms = [hall, salon, cuisine, bibliotheque]
+        
+        # Configuration des commandes
+        self.commands = {
+            "go": Command("go", " <direction> : se déplacer (N, S, E, O)", self.do_go, 1),
+            "quit": Command("quit", " : quitter le jeu", self.do_quit, 0),
+            "help": Command("help", " : afficher l'aide", self.do_help, 0),
+            "look": Command("look", " : observer la pièce", self.do_look, 0)
+        }
+
+        # Création du joueur
         self.player = Player(input("\nEntrez votre nom: "))
         self.player.current_room = hall
 
+    def do_go(self, args):
+        """Gère la commande 'go'."""
+        if len(args) < 2:
+            print("\nOù voulez-vous aller? Utilisez N, S, E, ou O")
+            return False
+        return self.player.move(args[1].upper())
+
+    def do_quit(self, args):
+        """Gère la commande 'quit'."""
+        print("\nAu revoir!")
+        return "quit"
+
+    def do_help(self, args):
+        """Affiche l'aide du jeu."""
+        print("\nCommandes disponibles:")
+        for cmd in self.commands.values():
+            print(f"- {cmd.command_word}{cmd.help_string}")
+        return True
+
+    def do_look(self, args):
+        """Observe la pièce actuelle."""
+        print(self.player.current_room.get_long_description())
+        return True
+
     def play(self):
+        """Démarre et gère la partie."""
         self.setup()
         print(f"\nBienvenue {self.player.name} dans la maison hantée!")
         print("Votre mission : explorez chaque pièce et résolvez les énigmes pour découvrir les secrets de la maison et gagner.")
-        print("\nCommandes disponibles:")
-        print("- 'go [direction]' pour vous déplacer (N, S, E, O)")
-        print("- 'quit' pour quitter le jeu")
+        self.do_help([])
         print(self.player.current_room.get_long_description())
 
         while not self.finished:
@@ -52,23 +89,20 @@ class Game:
             if not command:
                 continue
                 
-            if command[0] == "quit":
-                print("Au revoir!")
-                self.finished = True
-            elif command[0] == "go" and len(command) > 1:
-                result = self.player.move(command[1].upper())
-                if result == "win":
+            cmd_word = command[0]
+            if cmd_word in self.commands:
+                result = self.commands[cmd_word].action(command)
+                if result == "quit":
                     self.finished = True
-                    self.game_state = "won"
+                elif result == "win":
+                    print("\nFélicitations! Vous avez gagné!")
+                    self.finished = True
                 elif result == "lose":
+                    print("\nGame Over! Vous avez perdu.")
                     self.finished = True
-                    self.game_state = "lost"
             else:
-                print("Commande non reconnue. Utilisez 'go [direction]' ou 'quit'.")
-
-def main():
-    game = Game()
-    game.play()
+                print("\nCommande non reconnue. Tapez 'help' pour voir les commandes disponibles.")
 
 if __name__ == "__main__":
-    main()
+    game = Game()
+    game.play()
