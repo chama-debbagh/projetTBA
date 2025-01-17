@@ -21,7 +21,7 @@ class Room:
 
 
     def get_long_description(self):
-        return f"\nVous êtes {self.name}.{self.description}\n{self.get_exit_string()\n}"
+        return f"\nVous êtes {self.name}. {self.description}\n{self.get_exit_string()}\n"
 
     #def add_exit(self, direction, room):
        # self.exits[direction] = room
