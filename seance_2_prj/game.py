@@ -56,41 +56,41 @@ class Game:
         
     def setup(self):
     # Création des pièces
-    hall = Room(
-        "Hall",
-        "dans le hall d'entrée de la maison hantée, des chandeliers vacillants.",
-        "Je te suis partout. Je disparais chaque fois que la lumière arrive. Qui suis-je ?",
-        "ombre"
-    )
-    salon = Room(
-        "Salon",
-        "dans un vieux salon rempli de meubles couverts de poussière.",
-        "Je monte et je descends, mais je ne bouge jamais. Qui suis-je ?",
-        "escaliers"
-    )
-    cuisine = Room(
-        "Cuisine",
-        "dans une cuisine où les casseroles pendent des murs.",
-        "Combien font 12 divisé par 3, multiplié par 2 ?",
-        "8"
-    )
-    grenier = Room(
-        "Grenier",
-        "dans un grenier obscur rempli de toiles d'araignée.",
-        "Je commence la nuit et je finis le matin. Qui suis-je ?",
-        "nuit"
-    )
+        hall = Room(
+            "Hall",
+            "dans le hall d'entrée de la maison hantée, des chandeliers vacillants.",
+            "Je te suis partout. Je disparais chaque fois que la lumière arrive. Qui suis-je ?",
+            "ombre"
+        )
+        salon = Room(
+            "Salon",
+            "dans un vieux salon rempli de meubles couverts de poussière.",
+            "Je monte et je descends, mais je ne bouge jamais. Qui suis-je ?",
+            "escaliers"
+        )
+        cuisine = Room(
+            "Cuisine",
+            "dans une cuisine où les casseroles pendent des murs.",
+            "Combien font 12 divisé par 3, multiplié par 2 ?",
+            "8"
+        )
+        grenier = Room(
+            "Grenier",
+            "dans un grenier obscur rempli de toiles d'araignée.",
+            "Je commence la nuit et je finis le matin. Qui suis-je ?",
+            "nuit"
+        )
 
-    # Configuration des sorties des pièces
-    hall.exits = {"N": salon, "E": cuisine, "O": grenier}
-    salon.exits = {"S": hall, "E": cuisine}
-    cuisine.exits = {"W": salon, "N": grenier}
-    grenier.exits = {"S": salon, "E": hall}
+        # Configuration des sorties des pièces
+        hall.exits = {"N": salon, "E": cuisine, "O": grenier}
+        salon.exits = {"S": hall, "E": cuisine}
+        cuisine.exits = {"W": salon, "N": grenier}
+        grenier.exits = {"S": salon, "E": hall}
 
-    # Initialisation des pièces et du joueur
-    self.rooms = [hall, salon, cuisine, grenier]
-    self.player = Player(input("Entrez votre nom : "))  # Demande le nom du joueur
-    self.player.current_room = hall  # Place le joueur dans la pièce de départ
+        # Initialisation des pièces et du joueur
+        self.rooms = [hall, salon, cuisine, grenier]
+        self.player = Player(input("Entrez votre nom : "))  # Demande le nom du joueur
+        self.player.current_room = hall  # Place le joueur dans la pièce de départ
 
 
 if __name__ == "__main__":
