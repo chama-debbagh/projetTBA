@@ -16,6 +16,18 @@ class Game:
         self.health = 100  # Ajout d'un système de santé
 
     def setup(self):
+        # Ajout des commandes
+        help_cmd = Command("help", " : Afficher l'aide", Actions.help, 0)
+        self.commands["help"] = help_cmd
+        quit_cmd = Command("quit", " : Quitter le jeu", Actions.quit, 0)
+        self.commands["quit"] = quit_cmd
+        go_cmd = Command("go", " <direction> : Se déplacer", Actions.go, 1)
+        self.commands["go"] = go_cmd
+        solve_cmd = Command("solve", " : Résoudre l'énigme de la pièce", Actions.solve, 0)
+        self.commands["solve"] = solve_cmd
+        inspect_cmd = Command("inspect", " : Inspecter la pièce pour des indices", Actions.inspect, 0)
+        self.commands["inspect"] = inspect_cmd
+
         hall = Room(
             "Hall",
             "dans le hall d'entrée de la maison hantée, des chandeliers vacillants.",
@@ -66,8 +78,8 @@ class Game:
             self.process_command(command)
 
     def process_command(self, command_string):
-        words = command_string.split(" ")
-        command_word = words[0]
+        words = command_string.split(" ") #supprime les espaces en trop
+        command_word = words[0].lower() # Convertit en minuscules pour comparaison
 
         if command_word not in self.commands:
             print("Commande inconnue. Tapez 'help' pour obtenir la liste des commandes.")
