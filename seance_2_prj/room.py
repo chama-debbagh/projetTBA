@@ -35,13 +35,36 @@ class Room:
         """
         Retourne une description complète de la pièce, incluant les sorties et les objets.
         """
+        #description = f"\nVous êtes {self.description}\n"
+        #if not self.puzzle_solved and self.puzzle:
+        #    description += f"Énigme : {self.puzzle}\n"
+        #description += self.get_exit_string()
+        #if self.items:
+        #    description += f"\nObjets dans la pièce :\n  - {', '.join(str(item) for item in self.items)}"
+        #return description
         description = f"\nVous êtes {self.description}\n"
-        if not self.puzzle_solved and self.puzzle:
-            description += f"Énigme : {self.puzzle}\n"
         description += self.get_exit_string()
         if self.items:
             description += f"\nObjets dans la pièce :\n  - {', '.join(str(item) for item in self.items)}"
         return description
+
+    def add_exit_puzzle(self, direction, puzzle, solution):
+        self.exit_puzzles[direction] = puzzle
+        self.exit_solutions[direction] = solution
+        self.exit_puzzles_solved[direction] = False
+
+    def solve_exit_puzzle(self, direction, attempt):
+        if direction in self.exit_puzzles_solved and self.exit_puzzles_solved[direction]:
+            print("Cette énigme a déjà été résolue.")
+            return True
+        if attempt.lower() == self.exit_solutions[direction].lower():
+            self.exit_puzzles_solved[direction] = True
+            print("Bravo ! Vous avez résolu l'énigme.")
+            return True
+        else:
+            print("Ce n'est pas la bonne réponse. Essayez encore.")
+            return False
+
 
     def add_item(self, item):
         """
