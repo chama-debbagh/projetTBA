@@ -39,6 +39,9 @@ class Actions:
    
     
     def solve(game, list_of_words, number_of_parameters):
+        """ 
+        permet au joueur de resoudre l'enigme de la piece actuelle
+        """
         player = game.player
         current_room = player.current_room
 
@@ -47,11 +50,21 @@ class Actions:
             print(current_room.get_exit_string())  # Affiche les choix disponibles
             return True
 
-        attempt = input(f"\n{current_room.puzzle}\nVotre réponse : ")
-        current_room.solve_puzzle(attempt)
+        #attempt = input(f"\n{current_room.puzzle}\nVotre réponse : ")
+        #current_room.solve_puzzle(attempt)
+
+        #if current_room.puzzle_solved:
+         #   print(current_room.get_exit_string())  # Affiche les choix disponibles
+        #return True
+        while not current_room.puzzle_solved:
+            attempt = input(f"\n{current_room.puzzle}\nVotre réponse (ou 'exit' pour abandonner) : ")
+            if attempt.lower() == "exit":
+                print("\nVous avez décidé d'abandonner la résolution de l'énigme.")
+                break
+            current_room.solve_puzzle(attempt)
 
         if current_room.puzzle_solved:
-            print(current_room.get_exit_string())  # Affiche les choix disponibles
+            print(current_room.get_exit_string())
         return True
 
 
