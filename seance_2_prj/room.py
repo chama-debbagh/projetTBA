@@ -49,11 +49,17 @@ class Room:
         return description
 
     def add_exit_puzzle(self, direction, puzzle, solution):
+        """ 
+        ajoute une enigme a une sortie specifique
+        """
         self.exit_puzzles[direction] = puzzle
         self.exit_solutions[direction] = solution
         self.exit_puzzles_solved[direction] = False
 
     def solve_exit_puzzle(self, direction, attempt):
+        """ 
+        resout l'enigme d'une sortie donnee
+        """
         if direction in self.exit_puzzles_solved and self.exit_puzzles_solved[direction]:
             print("Cette énigme a déjà été résolue.")
             return True
@@ -78,12 +84,12 @@ class Room:
         """
         self.items.discard(item)
 
-    def solve_puzzle(self, attempt):
+    #def solve_puzzle(self, attempt):
         """
         Vérifie si la tentative de réponse correspond à la solution de l'énigme.
         """
-        if self.solution and attempt.lower() == self.solution.lower():
-            self.puzzle_solved = True
-            print("Bravo ! Vous avez résolu l'énigme.")
-        else:
-            print("Ce n'est pas la bonne réponse. Essayez encore.")
+        #if self.solution and attempt.lower() == self.solution.lower():
+         #   self.puzzle_solved = True
+         #   print("Bravo ! Vous avez résolu l'énigme.")
+       # else:
+        #    print("Ce n'est pas la bonne réponse. Essayez encore.")
