@@ -15,7 +15,7 @@ class Game:
         self.player = None
         self.health = 100  # Ajout d'un système de santé
 
-   """ def setup(self):
+    """ def setup(self):
         # Ajout des commandes
         help_cmd = Command("help", " : Afficher l'aide", Actions.help, 0)
         self.commands["help"] = help_cmd
