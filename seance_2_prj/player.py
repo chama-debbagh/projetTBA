@@ -18,7 +18,7 @@ class Player:
             return False
 
         if next_room.puzzle and not next_room.puzzle_solved:
-            print("\nVous devez résoudre l'énigme avant de continuer.\n")
+            print("\nVous devez résoudre l'énigme avant de continuer. Entrer solve \n")
             return False
 
         self.current_room = next_room
