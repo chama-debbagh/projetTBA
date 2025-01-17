@@ -4,155 +4,71 @@ from command import Command
 from actions import Actions
 from item import Item
 
+   # directions = set(["N", "E", "S", "O", "U", "D"])
 class Game:
-
-    directions = set(["N", "E", "S", "O", "U", "D"])
-
     def __init__(self):
         self.finished = False
         self.rooms = []
-        self.commands = {}
         self.player = None
-        self.health = 100  # Ajout d'un système de santé
-
-    """ def setup(self):
-        # Ajout des commandes
-        help_cmd = Command("help", " : Afficher l'aide", Actions.help, 0)
-        self.commands["help"] = help_cmd
-        quit_cmd = Command("quit", " : Quitter le jeu", Actions.quit, 0)
-        self.commands["quit"] = quit_cmd
-        go_cmd = Command("go", " <direction> : Se déplacer", Actions.go, 1)
-        self.commands["go"] = go_cmd
-        solve_cmd = Command("solve", " : Résoudre l'énigme de la pièce", Actions.solve, 0)
-        self.commands["solve"] = solve_cmd
-        inspect_cmd = Command("inspect", " : Inspecter la pièce pour des indices", Actions.inspect, 0)
-        self.commands["inspect"] = inspect_cmd
-
-        hall = Room(
-            "Hall",
-            "dans le hall d'entrée de la maison hantée, des chandeliers vacillants.",
-            "Je te suis partout. Je disparais chaque fois que la lumière arrive. Qui suis-je ?",
-            "ombre"
-        )
-        salon = Room(
-            "Salon",
-            "dans un vieux salon rempli de meubles couverts de poussière.",
-            "Je monte et je descends, mais je ne bouge jamais. Qui suis-je ?",
-            "escaliers"
-        )
-        cuisine = Room(
-            "Cuisine",
-            "dans une cuisine où les casseroles pendent des murs.",
-            "Combien font 12 divisé par 3, multiplié par 2 ?",
-            "8"
-        )
-        grenier = Room(
-            "Grenier",
-            "dans un grenier obscur rempli de toiles d'araignée.",
-            "Je commence la nuit et je finis le matin. Qui suis-je ?",
-            "nuit"
-        )
-
-        hall.exits = {"N": salon, "E": cuisine, "O": grenier}
-        salon.exits = {"S": hall, "E": cuisine}
-        cuisine.exits = {"W": salon, "N": grenier}
-        grenier.exits = {"S": salon, "E": hall}
-
-        self.rooms = [hall, salon, cuisine, grenier]
-        self.player = Player(input("Entrez votre nom : "))
-        self.player.current_room = hall 
-    
+        self.game_state = "playing"  # Can be "playing", "won", or "lost"
 
     def setup(self):
+        # Création des énigmes
+        riddles = [
+            Riddle("Je te suis partout. Je disparais chaque fois que la lumière arrive. Qui suis-je ?", "ombre"),
+            Riddle("Je monte et je descends, mais je ne bouge jamais. Qui suis-je ?", "escaliers"),
+            Riddle("Combien font 12 divisé par 3, multiplié par 2 ?", "8"),
+            Riddle("Plus j'ai de gardiens, moins je suis gardé. Moins j'ai de gardiens, plus je suis gardé. Qui suis-je ?", "secret")
+        ]
+
         # Création des pièces
-        hall = Room("Hall", "dans le hall d'entrée de la maison hantée, des chandeliers vacillants.")
-        salon = Room("Salon", "dans un vieux salon rempli de meubles couverts de poussière.")
-        cuisine = Room("Cuisine", "dans une cuisine où les casseroles pendent des murs.")
-        grenier = Room("Grenier", "dans un grenier obscur rempli de toiles d'araignée.")
+        hall = Room("Hall d'entrée", "un hall sombre et poussiéreux", riddles[0])
+        salon = Room("Salon", "une pièce avec des meubles recouverts de draps blancs", riddles[1])
+        cuisine = Room("Cuisine", "une cuisine abandonnée avec des ustensiles rouillés", riddles[2])
+        bibliotheque = Room("Bibliothèque", "une vaste bibliothèque aux étagères couvertes de toiles d'araignées", riddles[3])
 
         # Configuration des sorties
-        hall.exits = {"N": salon, "E": cuisine, "O": grenier}
-        salon.exits = {"S": hall}
-        cuisine.exits = {"W": hall}
-        grenier.exits = {"E": hall}
+        hall.exits = {"N": salon, "E": cuisine, "O": bibliotheque}
+        salon.exits = {"S": hall, "E": bibliotheque}
+        cuisine.exits = {"O": hall, "N": bibliotheque}
+        bibliotheque.exits = {"S": cuisine, "E": salon}
 
-        # Ajout des énigmes pour chaque sortie
-        hall.add_exit_puzzle("N", "Je te suis partout. Qui suis-je ?", "ombre")
-        hall.add_exit_puzzle("E", "Combien font 5 + 3 ?", "8")
-        hall.add_exit_puzzle("O", "Je monte et je descends, mais je ne bouge jamais. Qui suis-je ?", "escaliers")
-        salon.add_exit_puzzle("S", "Quel est le résultat de 10 - 4 ?", "6")
-
-        # Initialisation
-        self.rooms = [hall, salon, cuisine, grenier]
-        self.player.current_room = hall"""
-
-    def setup(self):
-        hall = Room("Hall", "dans le hall d'entrée de la maison hantée, des chandeliers vacillants.")
-        salon = Room("Salon", "dans un vieux salon rempli de meubles couverts de poussière.")
-        cuisine = Room("Cuisine", "dans une cuisine où les casseroles pendent des murs.")
-        grenier = Room("Grenier", "dans un grenier obscur rempli de toiles d'araignée.")
-
-        hall.exits = {"N": salon, "E": cuisine, "O": grenier}
-        salon.exits = {"S": hall}
-        cuisine.exits = {"W": hall}
-        grenier.exits = {"E": hall}
-
-        hall.add_exit_puzzle("N", "Je te suis partout. Qui suis-je ?", "ombre")
-        hall.add_exit_puzzle("E", "Combien font 5 + 3 ?", "8")
-        hall.add_exit_puzzle("O", "Je monte et je descends, mais je ne bouge jamais. Qui suis-je ?", "escaliers")
-        salon.add_exit_puzzle("S", "Quel est le résultat de 10 - 4 ?", "6")
-
-
-        # Vérifie que toutes les sorties ont une énigme associée
-        for direction in hall.exits.keys():
-            if direction not in hall.exit_puzzles:
-                print(f"Attention : aucune énigme n'est associée à la sortie {direction} du Hall.")
-
-
-
-        self.rooms = [hall, salon, cuisine, grenier]
+        self.rooms = [hall, salon, cuisine, bibliotheque]
+        self.player = Player(input("\nEntrez votre nom: "))
         self.player.current_room = hall
-
-
-    def reduce_health(self, amount):
-        self.health -= amount
-        if self.health <= 0:
-            print("\nVous avez succombé à la peur. Fin du jeu !")
-            self.finished = True
-        else:
-            print(f"\nVotre santé actuelle : {self.health}")
 
     def play(self):
         self.setup()
-        self.print_welcome()
-        while not self.finished:
-            command = input("> ")
-            self.process_command(command)
-
-    def process_command(self, command_string):
-        command_string = command_string.strip()  # Supprime les espaces inutiles en début et fin
-        if not command_string:  # Vérifie si la commande est vide après le nettoyage
-            print("Commande vide. Veuillez entrer une commande valide.")
-            return
-
-        words = command_string.split(" ") #supprime les espaces en trop
-        command_word = words[0].lower() # Convertit en minuscules pour comparaison
-
-        if command_word not in self.commands:
-            print("Commande inconnue. Tapez 'help' pour obtenir la liste des commandes.")
-        else:
-            command = self.commands[command_word]
-            try:
-                command.action(self, words, command.number_of_parameters)
-            except Exception as e:
-                print(f"Erreur : {e}")
-
-    def print_welcome(self):
-        print(f"\nBienvenue {self.player.name} dans la maison hantée !")
-        print("Votre mission : explorez chaque pièce et résolvez les énigmes pour découvrir les secrets de la maison.")
-        print("Entrez 'help' pour voir les commandes disponibles.")
+        print(f"\nBienvenue {self.player.name} dans la maison hantée!")
+        print("Votre mission : explorez chaque pièce et résolvez les énigmes pour découvrir les secrets de la maison et gagner.")
+        print("\nCommandes disponibles:")
+        print("- 'go [direction]' pour vous déplacer (N, S, E, O)")
+        print("- 'quit' pour quitter le jeu")
         print(self.player.current_room.get_long_description())
 
-if __name__ == "__main__":
-    Game().play()
+        while not self.finished:
+            command = input("\nQue voulez-vous faire? > ").lower().split()
+            
+            if not command:
+                continue
+                
+            if command[0] == "quit":
+                print("Au revoir!")
+                self.finished = True
+            elif command[0] == "go" and len(command) > 1:
+                result = self.player.move(command[1].upper())
+                if result == "win":
+                    self.finished = True
+                    self.game_state = "won"
+                elif result == "lose":
+                    self.finished = True
+                    self.game_state = "lost"
+            else:
+                print("Commande non reconnue. Utilisez 'go [direction]' ou 'quit'.")
 
+def main():
+    game = Game()
+    game.play()
+
+if __name__ == "__main__":
+    main()
