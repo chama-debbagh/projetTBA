@@ -32,7 +32,15 @@ class Command:
     """
 
     # The constructor.
+    """
+    Cette classe représente une commande du jeu.
 
+    Attributs :
+        command_word (str) : Le mot-clé de la commande.
+        help_string (str) : Une description de l'utilisation de la commande.
+        action (function) : La fonction à exécuter lorsque la commande est appelée.
+        number_of_parameters (int) : Le nombre de paramètres attendus par la commande.
+    """
 
     def __init__(self, command_word, help_string, action, number_of_parameters):
         self.command_word = command_word

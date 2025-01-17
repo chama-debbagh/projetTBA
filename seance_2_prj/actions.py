@@ -20,110 +20,46 @@ MSG1 = "\nLa commande '{command_word}' prend 1 seul paramètre.\n"
 
 class Actions:
 
+    @staticmethod
     def go(game, list_of_words, number_of_parameters):
-        player = game.player
-        l = len(list_of_words)
-        if l != number_of_parameters + 1:
-            command_word = list_of_words[0]
-            print(MSG1.format(command_word=command_word))
+        if len(list_of_words) != number_of_parameters + 1:
+            print("\nLa commande 'go' nécessite une direction.")
             return False
 
         direction = list_of_words[1].upper()
-        if direction not in game.directions:
-            print(f"\nDirection '{direction}' non reconnue. Utilisez N, E, S, O, U, D.\n")
-            return False
-        
-        current_room = player.current_room
-        if current_room.exit_puzzles and direction in current_room.exit_puzzles :
-            if not current_room.exit_puzzles_solved[direction]:
-                print(f"\nÉnigme pour aller vers {direction} : {current_room.exit_puzzles[direction]}")
-                #attempt = input("Votre réponse : ")
-                attempts = 3
-                while attempts > 0:
-                    attempt = input("Votre réponse : ")
-                    if current_room.solve_exit_puzzle(direction, attempt):
-                        break
-                    attempts -= 1
-                    print(f"Tentatives restantes : {attempts}")
-                if attempts == 0:
-                    print("Vous avez échoué. Fin du jeu.")
-                    return False
-
-                if not current_room.solve_exit_puzzle(direction, attempt):
-                    return False
-
-        player.move(direction)
-        return True
-
-   
-    
-    def solve(game, list_of_words, number_of_parameters):
-        """ 
-        permet au joueur de resoudre l'enigme de la piece actuelle
-        """
-        player = game.player
-        current_room = player.current_room
-
-        if current_room.puzzle_solved:
-            print("\nVous avez déjà résolu l'énigme ici.")
-            print(current_room.get_exit_string())  # Affiche les choix disponibles
+        if direction in game.directions:
+            game.player.move(direction)
             return True
-
-        #attempt = input(f"\n{current_room.puzzle}\nVotre réponse : ")
-        #current_room.solve_puzzle(attempt)
-
-        #if current_room.puzzle_solved:
-         #   print(current_room.get_exit_string())  # Affiche les choix disponibles
-        #return True
-        while not current_room.puzzle_solved:
-            attempt = input(f"\n{current_room.puzzle}\nVotre réponse (ou 'exit' pour abandonner) : ")
-            if attempt.lower() == "exit":
-                print("\nVous avez décidé d'abandonner la résolution de l'énigme.")
-                break
-            current_room.solve_puzzle(attempt)
-
-        if current_room.puzzle_solved:
-            print(current_room.get_exit_string())
-        return True
-
-
-    def inspect(game, list_of_words, number_of_parameters):
-        """
-        Inspecter la pièce pour trouver des indices ou des dangers.
-        """
-        if len(list_of_words) != number_of_parameters + 1:
-            print("\nLa commande 'inspect' ne prend pas de paramètre.\n")
-            return False
-
-        print("\nVous inspectez la pièce...")
-        if "piège" in game.player.current_room.description.lower():
-            print("Oh non ! Vous avez déclenché un piège !")
-            game.reduce_health(20)
         else:
-            print("Vous trouvez un indice utile.")
-        return True
-
-    def quit(game, list_of_words, number_of_parameters):
-        l = len(list_of_words)
-        if l != number_of_parameters + 1:
-            command_word = list_of_words[0]
-            print(MSG0.format(command_word=command_word))
+            print("\nDirection invalide. Utilisez N, E, S, O.")
             return False
 
-        player = game.player
-        print(f"\nMerci {player.name} d'avoir joué. Au revoir.\n")
+    @staticmethod
+    def quit(game, list_of_words, number_of_parameters):
+        if len(list_of_words) != number_of_parameters + 1:
+            print("\nLa commande 'quit' ne prend pas de paramètres.")
+            return False
+
+        print(f"\nMerci d'avoir joué, {game.player.name} ! Au revoir.")
         game.finished = True
         return True
 
+    @staticmethod
     def help(game, list_of_words, number_of_parameters):
-        l = len(list_of_words)
-        if l != number_of_parameters + 1:
-            command_word = list_of_words[0]
-            print(MSG0.format(command_word=command_word))
+        if len(list_of_words) != number_of_parameters + 1:
+            print("\nLa commande 'help' ne prend pas de paramètres.")
             return False
 
         print("\nVoici les commandes disponibles :")
         for command in game.commands.values():
-            print(f"  - {command}")
-        print()
+            print(f"  - {command.command_word}: {command.help_string}")
+        return True
+
+    @staticmethod
+    def look(game, list_of_words, number_of_parameters):
+        if len(list_of_words) != number_of_parameters + 1:
+            print("\nLa commande 'look' ne prend pas de paramètres.")
+            return False
+
+        print(game.player.current_room.get_long_description())
         return True
