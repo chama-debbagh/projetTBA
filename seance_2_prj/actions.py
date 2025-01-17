@@ -43,15 +43,15 @@ class Actions:
         current_room = player.current_room
 
         if current_room.puzzle_solved:
-        print("\nVous avez déjà résolu l'énigme ici.")
-        print(current_room.get_exit_string())  # Affiche les choix disponibles
-        return True
+            print("\nVous avez déjà résolu l'énigme ici.")
+            print(current_room.get_exit_string())  # Affiche les choix disponibles
+            return True
 
         attempt = input(f"\n{current_room.puzzle}\nVotre réponse : ")
         current_room.solve_puzzle(attempt)
 
         if current_room.puzzle_solved:
-        print(current_room.get_exit_string())  # Affiche les choix disponibles
+            print(current_room.get_exit_string())  # Affiche les choix disponibles
         return True
 
 
