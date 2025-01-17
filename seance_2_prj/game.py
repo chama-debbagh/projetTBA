@@ -14,13 +14,8 @@ class Game:
         self.commands = {}
         self.player = None
         self.health = 100  # Ajout d'un système de santé
-        self.player.current_room = hall
 
-    
-       
-        
     def setup(self):
-    # Création des pièces
         hall = Room(
             "Hall",
             "dans le hall d'entrée de la maison hantée, des chandeliers vacillants.",
@@ -46,18 +41,14 @@ class Game:
             "nuit"
         )
 
-        # Configuration des sorties des pièces
         hall.exits = {"N": salon, "E": cuisine, "O": grenier}
         salon.exits = {"S": hall, "E": cuisine}
         cuisine.exits = {"W": salon, "N": grenier}
         grenier.exits = {"S": salon, "E": hall}
 
-        # Initialisation des pièces et du joueur
         self.rooms = [hall, salon, cuisine, grenier]
-        self.player = Player(input("Entrez votre nom : "))  # Demande le nom du joueur
-        self.player.current_room = hall  # Place le joueur dans la pièce de départ
-
-
+        self.player = Player(input("Entrez votre nom : "))
+        self.player.current_room = hall
 
     def reduce_health(self, amount):
         self.health -= amount
@@ -92,8 +83,6 @@ class Game:
         print("Votre mission : explorez chaque pièce et résolvez les énigmes pour découvrir les secrets de la maison.")
         print("Entrez 'help' pour voir les commandes disponibles.")
         print(self.player.current_room.get_long_description())
-
-
 
 if __name__ == "__main__":
     Game().play()
