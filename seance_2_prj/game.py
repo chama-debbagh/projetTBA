@@ -16,42 +16,7 @@ class Game:
         self.health = 100  # Ajout d'un système de santé
         self.player.current_room = hall
 
-
-    def reduce_health(self, amount):
-        self.health -= amount
-        if self.health <= 0:
-            print("\nVous avez succombé à la peur. Fin du jeu !")
-            self.finished = True
-        else:
-            print(f"\nVotre santé actuelle : {self.health}")
-
-    def play(self):
-        self.setup()
-        self.print_welcome()
-        while not self.finished:
-            command = input("> ")
-            self.process_command(command)
-
-    def process_command(self, command_string):
-        words = command_string.split(" ")
-        command_word = words[0]
-
-        if command_word not in self.commands:
-            print("Commande inconnue. Tapez 'help' pour obtenir la liste des commandes.")
-        else:
-            command = self.commands[command_word]
-            try:
-                command.action(self, words, command.number_of_parameters)
-            except Exception as e:
-                print(f"Erreur : {e}")
-
-    def print_welcome(self):
-        print(f"\nBienvenue {self.player.name} dans la maison hantée !")
-        print("Votre mission : explorez chaque pièce et résolvez les énigmes pour découvrir les secrets de la maison.")
-        print("Entrez 'help' pour voir les commandes disponibles.")
-        print(self.player.current_room.get_long_description())
-
-
+    
        
         
     def setup(self):
@@ -91,6 +56,43 @@ class Game:
         self.rooms = [hall, salon, cuisine, grenier]
         self.player = Player(input("Entrez votre nom : "))  # Demande le nom du joueur
         self.player.current_room = hall  # Place le joueur dans la pièce de départ
+
+
+
+    def reduce_health(self, amount):
+        self.health -= amount
+        if self.health <= 0:
+            print("\nVous avez succombé à la peur. Fin du jeu !")
+            self.finished = True
+        else:
+            print(f"\nVotre santé actuelle : {self.health}")
+
+    def play(self):
+        self.setup()
+        self.print_welcome()
+        while not self.finished:
+            command = input("> ")
+            self.process_command(command)
+
+    def process_command(self, command_string):
+        words = command_string.split(" ")
+        command_word = words[0]
+
+        if command_word not in self.commands:
+            print("Commande inconnue. Tapez 'help' pour obtenir la liste des commandes.")
+        else:
+            command = self.commands[command_word]
+            try:
+                command.action(self, words, command.number_of_parameters)
+            except Exception as e:
+                print(f"Erreur : {e}")
+
+    def print_welcome(self):
+        print(f"\nBienvenue {self.player.name} dans la maison hantée !")
+        print("Votre mission : explorez chaque pièce et résolvez les énigmes pour découvrir les secrets de la maison.")
+        print("Entrez 'help' pour voir les commandes disponibles.")
+        print(self.player.current_room.get_long_description())
+
 
 
 if __name__ == "__main__":
