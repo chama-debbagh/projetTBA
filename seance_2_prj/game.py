@@ -15,7 +15,7 @@ class Game:
         self.player = None
         self.health = 100  # Ajout d'un système de santé
 
-    def setup(self):
+   """ def setup(self):
         # Ajout des commandes
         help_cmd = Command("help", " : Afficher l'aide", Actions.help, 0)
         self.commands["help"] = help_cmd
@@ -60,7 +60,32 @@ class Game:
 
         self.rooms = [hall, salon, cuisine, grenier]
         self.player = Player(input("Entrez votre nom : "))
+        self.player.current_room = hall """
+    
+
+    def setup(self):
+        # Création des pièces
+        hall = Room("Hall", "dans le hall d'entrée de la maison hantée, des chandeliers vacillants.")
+        salon = Room("Salon", "dans un vieux salon rempli de meubles couverts de poussière.")
+        cuisine = Room("Cuisine", "dans une cuisine où les casseroles pendent des murs.")
+        grenier = Room("Grenier", "dans un grenier obscur rempli de toiles d'araignée.")
+
+        # Configuration des sorties
+        hall.exits = {"N": salon, "E": cuisine, "O": grenier}
+        salon.exits = {"S": hall}
+        cuisine.exits = {"W": hall}
+        grenier.exits = {"E": hall}
+
+        # Ajout des énigmes pour chaque sortie
+        hall.add_exit_puzzle("N", "Je te suis partout. Qui suis-je ?", "ombre")
+        hall.add_exit_puzzle("E", "Combien font 5 + 3 ?", "8")
+        hall.add_exit_puzzle("O", "Je monte et je descends, mais je ne bouge jamais. Qui suis-je ?", "escaliers")
+        salon.add_exit_puzzle("S", "Quel est le résultat de 10 - 4 ?", "6")
+
+        # Initialisation
+        self.rooms = [hall, salon, cuisine, grenier]
         self.player.current_room = hall
+
 
     def reduce_health(self, amount):
         self.health -= amount

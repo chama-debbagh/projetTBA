@@ -32,6 +32,14 @@ class Actions:
         if direction not in game.directions:
             print(f"\nDirection '{direction}' non reconnue. Utilisez N, E, S, O, U, D.\n")
             return False
+        
+        current_room = player.current_room
+        if direction in current_room.exit_puzzles:
+            if not current_room.exit_puzzles_solved[direction]:
+                print(f"\nÉnigme pour aller vers {direction} : {current_room.exit_puzzles[direction]}")
+                attempt = input("Votre réponse : ")
+                if not current_room.solve_exit_puzzle(direction, attempt):
+                    return False
 
         player.move(direction)
         return True
