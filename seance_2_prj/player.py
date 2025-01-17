@@ -1,39 +1,60 @@
-# Define the Player class.
-class Player():
+class Player:
 
-    # Define the constructor.
     def __init__(self, name):
         self.name = name
         self.current_room = None
-        self.history=[] #initialisation de l historique avec une liste videee
-    
+        self.history = []
+        self.inventory = {}
+        self.health = 100  # Ajout d'un système de santé
 
-    def get_history(self):
-        """ retourner une representation des rooms qu'on a visiter. mais n'inclue pas la room actuelle
-        """
-        if not self.history:  #s'il y a rien dans l'historique
-           return ""
-        history_string="\nVous avez deja visiter les pieces suivantes:"
-        for room in self.history :
-            history_string+= f"\n    -{room.description} "
-        return history_string
-    
-    
-    # Define the move method.
     def move(self, direction):
-        # Get the next room from the exits dictionary of the current room.
-        next_room = self.current_room.exits[direction]
+        if self.current_room:
+            self.history.append(self.current_room.name)
 
-        # If the next room is None, print an error message and return False.
+        next_room = self.current_room.get_exit(direction)
+
         if next_room is None:
             print("\nAucune porte dans cette direction !\n")
             return False
-        self.history.append(self.current_room) #ajout de la position precedente du joueur a l historique
-        
-        # Set the current room to the next room.
+
+        if next_room.puzzle and not next_room.puzzle_solved:
+            print("\nVous devez résoudre l'énigme avant de continuer.\n")
+            return False
+
         self.current_room = next_room
         print(self.current_room.get_long_description())
-        print(self.get_history())
+        self.print_history()
         return True
 
-    
+    def print_history(self):
+        if self.history:
+            print("Vous avez visité les pièces suivantes :")
+            for room_name in self.history:
+                print(f"  - {room_name}")
+        else:
+            print("Vous n'avez pas encore visité de pièces.")
+
+    def add_item_to_inventory(self, item):
+        self.inventory[item.name] = item
+
+    def remove_item_from_inventory(self, item_name):
+        if item_name in self.inventory:
+            del self.inventory[item_name]
+            print(f"Vous avez retiré '{item_name}' de votre inventaire.")
+        else:
+            print(f"'{item_name}' n'est pas dans votre inventaire.")
+
+    def adjust_health(self, amount):
+        self.health += amount
+        if self.health <= 0:
+            print(f"{self.name} a succombé à la peur. Fin du jeu.")
+        else:
+            print(f"Santé restante : {self.health}")
+
+    def get_inventory(self):
+        if not self.inventory:
+            return "Votre inventaire est vide."
+        inventory_description = "\nObjets dans votre inventaire :\n"
+        for item in self.inventory.values():
+            inventory_description += f"  - {item.name}: {item.description} ({item.weight} kg)\n"
+        return inventory_description
