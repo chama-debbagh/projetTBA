@@ -51,54 +51,47 @@ class Game:
         print("Entrez 'help' pour voir les commandes disponibles.")
         print(self.player.current_room.get_long_description())
 
+
+       
+        
     def setup(self):
-        # Création des commandes
-        help_cmd = Command("help", " : Afficher l'aide", Actions.help, 0)
-        self.commands["help"] = help_cmd
-        quit_cmd = Command("quit", " : Quitter le jeu", Actions.quit, 0)
-        self.commands["quit"] = quit_cmd
-        go_cmd = Command("go", " <direction> : Se déplacer", Actions.go, 1)
-        self.commands["go"] = go_cmd
-        solve_cmd = Command("solve", " : Résoudre l'énigme de la pièce", Actions.solve, 0)
-        self.commands["solve"] = solve_cmd
-        inspect_cmd = Command("inspect", " : Inspecter la pièce pour des indices", Actions.inspect, 0)
-        self.commands["inspect"] = inspect_cmd
+    # Création des pièces
+    hall = Room(
+        "Hall",
+        "dans le hall d'entrée de la maison hantée, des chandeliers vacillants.",
+        "Je te suis partout. Je disparais chaque fois que la lumière arrive. Qui suis-je ?",
+        "ombre"
+    )
+    salon = Room(
+        "Salon",
+        "dans un vieux salon rempli de meubles couverts de poussière.",
+        "Je monte et je descends, mais je ne bouge jamais. Qui suis-je ?",
+        "escaliers"
+    )
+    cuisine = Room(
+        "Cuisine",
+        "dans une cuisine où les casseroles pendent des murs.",
+        "Combien font 12 divisé par 3, multiplié par 2 ?",
+        "8"
+    )
+    grenier = Room(
+        "Grenier",
+        "dans un grenier obscur rempli de toiles d'araignée.",
+        "Je commence la nuit et je finis le matin. Qui suis-je ?",
+        "nuit"
+    )
 
-        # Création des pièces
-        hall = Room(
-            "Hall",
-            "dans le hall d'entrée de la maison hantée, des chandeliers vacillants.",
-            "Je te suis partout. Je disparais chaque fois que la lumière arrive. Qui suis-je ?",
-            "ombre"
-         )
-        salon = Room(
-            "Salon",
-            "dans un vieux salon rempli de meubles couverts de poussière.",
-            "Je monte et je descends, mais je ne bouge jamais. Qui suis-je ?",
-            "escaliers"
-        )
-        cuisine = Room(
-            "Cuisine",
-            "dans une cuisine où les casseroles pendent des murs.",
-            "Combien font 12 divisé par 3, multiplié par 2 ?",
-            "8"
-        )
-        grenier = Room(
-            "Grenier",
-            "dans un grenier obscur rempli de toiles d'araignée.",
-            "Je commence la nuit et je finis le matin. Qui suis-je ?",
-            "nuit"
-        )
-
-        hall.exits = {"N": salon, "E": cuisine, "O": grenier}
-        salon.exits = {"S": hall, "E": cuisine}
-        cuisine.exits = {"W": salon, "N": grenier}
-        grenier.exits = {"S": salon, "E": hall}
+    # Configuration des sorties des pièces
+    hall.exits = {"N": salon, "E": cuisine, "O": grenier}
+    salon.exits = {"S": hall, "E": cuisine}
+    cuisine.exits = {"W": salon, "N": grenier}
+    grenier.exits = {"S": salon, "E": hall}
 
     # Initialisation des pièces et du joueur
     self.rooms = [hall, salon, cuisine, grenier]
-    self.player = Player(input("Entrez votre nom : "))  # Assurez-vous que cette ligne est présente
-    self.player.current_room = hall  # Attribuer la pièce initiale au joueur
+    self.player = Player(input("Entrez votre nom : "))  # Demande le nom du joueur
+    self.player.current_room = hall  # Place le joueur dans la pièce de départ
+
 
 if __name__ == "__main__":
     Game().play()
