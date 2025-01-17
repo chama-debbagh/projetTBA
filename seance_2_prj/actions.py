@@ -39,20 +39,20 @@ class Actions:
    
     
     def solve(game, list_of_words, number_of_parameters):
-    player = game.player
-    current_room = player.current_room
+        player = game.player
+        current_room = player.current_room
 
-    if current_room.puzzle_solved:
+        if current_room.puzzle_solved:
         print("\nVous avez déjà résolu l'énigme ici.")
         print(current_room.get_exit_string())  # Affiche les choix disponibles
         return True
 
-    attempt = input(f"\n{current_room.puzzle}\nVotre réponse : ")
-    current_room.solve_puzzle(attempt)
+        attempt = input(f"\n{current_room.puzzle}\nVotre réponse : ")
+        current_room.solve_puzzle(attempt)
 
-    if current_room.puzzle_solved:
+        if current_room.puzzle_solved:
         print(current_room.get_exit_string())  # Affiche les choix disponibles
-    return True
+        return True
 
 
     def inspect(game, list_of_words, number_of_parameters):
