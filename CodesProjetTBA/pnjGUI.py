@@ -4,16 +4,17 @@ from game import Game
 from player import Player
 from room import Room
 
-class GameGUI(tk.Tk):
+class PnjGUI(tk.Tk):  # Renommé de GameGUI à PnjGUI
     def __init__(self):
         super().__init__()
         
         self.game = Game()
-        self.title("Maison Hantée - Jeu d'Aventure")
+        self.title("PNJ - La Maison Hantée")  # Titre modifié
         self.geometry("1024x768")
         
         self.setup_gui()
         self.bind_keys()
+        
         
     def setup_gui(self):
         # Frame principale

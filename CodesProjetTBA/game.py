@@ -2,6 +2,7 @@ from player import Player
 from room import Room
 from riddle import Riddle
 from command import Command
+from pnjgui import PnjGUI
 
 class Game:
     """
@@ -186,3 +187,5 @@ class Game:
 if __name__ == "__main__":
     game = Game()
     game.play()
+    pnj_gui = PnjGUI()
+    pnj_gui.mainloop()
