@@ -2,7 +2,6 @@ from player import Player
 from room import Room
 from riddle import Riddle
 from command import Command
-from pnj import GameGUI
 
 class Game:
     """
