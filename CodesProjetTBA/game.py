@@ -187,5 +187,5 @@ class Game:
 if __name__ == "__main__":
     game = Game()
     game.play()
-    pnj_gui = PnjGUI()
-    pnj_gui.mainloop()
+    pnjGUI = PnjGUI()
+    pnjGUI.mainloop()
