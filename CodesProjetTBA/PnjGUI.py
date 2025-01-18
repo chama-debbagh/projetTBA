@@ -15,7 +15,46 @@ class PnjGUI(tk.Tk):  # Renommé de GameGUI à PnjGUI
         self.setup_gui()
         self.bind_keys()
         
+    def setup_pnj(self):
+        """Configure les PNJ du jeu."""
+        self.pnjs = {
+            "fantome": Pnj("Fantôme", 
+                          "Un fantôme translucide flotte dans l'air", 
+                          "Bienvenue dans la maison hantée... Si tu veux sortir, tu devras résoudre mes énigmes..."),
+            "servante": Pnj("Servante", 
+                           "Une servante au regard vide se tient immobile", 
+                           "Méfiez-vous des ombres dans cette maison..."),
+            "majordome": Pnj("Majordome", 
+                            "Un majordome à l'allure distinguée vous observe", 
+                            "Chaque pièce cache un secret... Saurez-vous les découvrir ?")
+        }
+
+    def talk_to_pnj(self, pnj_name):
+        """Permet de parler à un PNJ."""
+        if pnj_name in self.pnjs:
+            pnj = self.pnjs[pnj_name]
+            self.append_to_display(f"\n{pnj.name}: {pnj.speak()}")
+        else:
+            self.append_to_display("\nCe PNJ n'est pas présent ici.")
+
+    # Dans setup_gui, ajoutez un bouton pour parler aux PNJ :
+    def setup_gui(self):
+        # Ajoutez après les autres boutons dans commands_frame :
+        ttk.Button(self.commands_frame, text="Parler", command=self.show_pnj_dialogue).pack(side=tk.LEFT, padx=2)
+
+    def show_pnj_dialogue(self):
+        """Affiche une fenêtre de dialogue avec les PNJ disponibles."""
+        pnj_window = tk.Toplevel(self)
+        pnj_window.title("Parler aux PNJ")
+        pnj_window.geometry("300x200")
         
+        for pnj_name, pnj in self.pnjs.items():
+            ttk.Button(
+                pnj_window,
+                text=f"Parler à {pnj.name}",
+                command=lambda n=pnj_name: self.talk_to_pnj(n)
+            ).pack(pady=5)
+                
     def setup_gui(self):
         # Frame principale
         self.main_frame = ttk.Frame(self)
