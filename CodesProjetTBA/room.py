@@ -1,6 +1,6 @@
 
 from riddle import Riddle
-from pnjgui import PnjGUI
+from PnjGUI import PnjGUI
 class Room:
     """
     Classe représentant une pièce dans la maison hantée.

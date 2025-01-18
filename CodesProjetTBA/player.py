@@ -1,4 +1,4 @@
-from pnjgui import PnjGUI
+from PnjGUI import PnjGUI
 # player.py
 class Player:
     """
